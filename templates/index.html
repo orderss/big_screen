@@ -1,0 +1,175 @@
+﻿<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>index</title>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/comon0.css') }}">  
+</head>
+
+<script>
+
+  
+  $(window).load(function () {
+    $(".loading").fadeOut()
+  })
+
+  /****/
+  $(document).ready(function () {
+    var whei = $(window).width()
+    $("html").css({ fontSize: whei / 20 })
+    $(window).resize(function () {
+      var whei = $(window).width()
+      $("html").css({ fontSize: whei / 20 })
+    });
+  });
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/js.js') }}"></script>
+
+
+<body>
+  <div class="loading">
+    <div class="loadbox"> <img src="{{ url_for('static', filename='picture/loading.gif') }}"> 页面加载中... </div>
+  </div>
+  <div class="head">
+    <h1>食品营养数据展示</h1>
+    <div class="weather"><!--<img src="picture/weather.png"><span>多云转小雨</span>--><span id="showTime"></span></div>
+
+    <script>
+      var t = null;
+      t = setTimeout(time, 1000);//開始运行
+      function time() {
+        clearTimeout(t);//清除定时器
+        dt = new Date();
+        var y = dt.getFullYear();
+        var mt = dt.getMonth() + 1;
+        var day = dt.getDate();
+        var h = dt.getHours();//获取时
+        var m = dt.getMinutes();//获取分
+        var s = dt.getSeconds();//获取秒
+        document.getElementById("showTime").innerHTML = y + "年" + mt + "月" + day + "日" + h + "时" + m + "分" + s + "秒";
+        t = setTimeout(time, 1000); //设定定时器，循环运行     
+      }
+
+    </script>
+
+
+  </div>
+  <div class="mainbox">
+    <ul class="clearfix">
+      <li>
+        <div class="boxall" style="height: 3.2rem">
+          <div class="alltitle">碳水化物、脂肪和蛋白质的数量对能量大小的影响</div>
+          <div class="allnav" id="echart1"></div>
+          <div class="boxfoot"></div>
+        </div>
+        <div class="boxall" style="height: 3.2rem">
+          <div class="alltitle">水分、膳食纤维和碳水化物数量对可食部分的影响</div>
+          <div class="allnav" id="echart2"></div>
+          <div class="boxfoot"></div>
+        </div>
+        <div class="boxall" style="height: 3.2rem">
+          <div style="height:100%; width: 100%;">
+            <div class="alltitle">食物中微量元素钠、钙、铁对比</div>
+            <div class="allnav" id="echart3"></div>
+            <div class="boxfoot"></div>
+          </div>
+          <div class="boxfoot">
+
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="bar">
+          <div class="barbox">
+            <ul class="clearfix">
+              <li class="pulll_left counter">{{ row_count-1 }}</li>
+              <li class="pulll_left counter">{{ column_count-2 }}</li>
+            </ul>
+          </div>
+          <div class="barbox2">
+            <ul class="clearfix">
+              <li class="pulll_left">调查数量</li>
+              <li class="pulll_left">调查指标数量</li>
+            </ul>
+          </div>
+        </div>
+        <!-- <div class="map">
+          <div class="map1"><img src="picture/lbx.png"></div>
+          <div class="map2"><img src="picture/jt.png"></div>
+          <div class="map3"><img src="picture/map.png"></div>
+          <div class="map4" id="map_1"></div>
+        </div> -->
+        <h1 class="h1">数据展示</h1>
+        <div class="container">
+          <table>
+              <thead>
+                  <tr>
+                      <th>序号</th>
+                      <th>名称</th>
+                      <th>可食部分(%)</th>
+                      <th>能量(千卡)</th>
+                      <th>水分(克)</th>
+                      <th>蛋白质(克)</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for row in data %}
+                  <tr>
+                    <td>{{ row['序号'] }}</td>
+                    <td>{{ row['名称'] }}</td>
+                    <td>{{ row['可食部分(%)'] }}</td>
+                    <td>{{ row['能量(千卡)'] }}</td>
+                    <td>{{ row['水分(克)'] }}</td>
+                    <td>{{ row['蛋白质(克)'] }}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+      </div>
+      <div class="pagination">
+        {% if current_page > 1 %}
+        <a href="?page=1">首页</a>
+        <a href="?page={{ current_page - 1 }}">上一页</a>
+        {% else %}
+        <span class="disabled">首页</span>
+        <span class="disabled">上一页</span>
+        {% endif %}
+    
+        {% if current_page < total_pages %}
+        <a href="?page={{ current_page + 1 }}">下一页</a>
+        <a href="?page={{ total_pages }}">尾页</a>
+        {% else %}
+        <span class="disabled">下一页</span>
+        <span class="disabled">尾页</span>
+        {% endif %}
+        <!-- <img src="{{ url_for('static', filename='picture/vv.gif') }}"> 页面加载中... </div> -->
+    </div>
+    <div class="vv"> <img src="{{ url_for('static', filename='picture/vv.gif') }}"> </div>
+      </li>
+      <li>
+        <div class="boxall" style="height:3.4rem">
+          <div class="alltitle">维生素对比</div>
+          <div class="allnav" id="echart4"></div>
+          <div class="boxfoot"></div>
+        </div>
+        <div class="boxall" style="height: 3.2rem">
+          <div class="alltitle">蛋白质含量排序</div>
+          <div class="allnav" id="echart5"></div>
+          <div class="boxfoot"></div>
+        </div>
+        <div class="boxall" style="height:3.4rem">
+          <div class="alltitle">脂肪含量与膳食纤维含量对胆固醇影响</div>
+          <div class="allnav" id="echart6"></div>
+          <div class="boxfoot"></div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="back"></div>
+
+</body>
+
+</html>
