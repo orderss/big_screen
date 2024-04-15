@@ -43,15 +43,7 @@ def index():
             # 计算当前页的数据范围
             offset = max((page - 1) * PER_PAGE, 0)
             limit = PER_PAGE
-            # 执行分页查询
-            # query = text(f"SELECT 名称, `可食部分(%)`, `能量(千卡)` FROM 食物营养数据 LIMIT {PER_PAGE} OFFSET {offset}")
-            # result = connection.execute(query, limit=limit, offset=offset)
-            # data = result.fetchall()
             #执行数据库查询
-            # query = text("SELECT 名称,`可食部分(%)`,`能量(千卡)` FROM 食物营养数据 LIMIT :per_page OFFSET :offset" )
-            # result = connection.execute(query)
-            # result = connection.execute(query, {"per_page": PER_PAGE},{"offset": offset})
-            # query = text("SELECT 序号,名称, `可食部分(%)`, `能量(千卡)`,`水分(克)`,`蛋白质(克)` FROM 食物营养数据 ORDER BY CAST(序号 AS UNSIGNED) ASC LIMIT :per_page OFFSET :offset")
             query = text("SELECT * FROM 食物营养数据 ORDER BY CAST(序号 AS UNSIGNED) ASC LIMIT :per_page OFFSET :offset")
             # 将参数打包成一个字典
             params = {"per_page": PER_PAGE, "offset": offset}
@@ -103,14 +95,6 @@ def get_data():
     except Exception as e:
         print("获取数据失败：", e)
         return jsonify(error=str(e))
-
-# @app.route('/static/js/js.js')
-# def js():
-#     global data  # 使用全局变量
-#     # 渲染js.js模板，并传递数据到前端
-#     return render_template('js.js', data=data)
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
