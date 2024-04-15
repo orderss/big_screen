@@ -1137,7 +1137,7 @@ function echarts_6(names,zf,ssxw,dgc) {
        // barGap: 1, //柱子之间间距
         itemStyle: {
             normal: {
-                color:'#2f89cf',
+                color:'blue',
                 opacity: 1,
 				barBorderRadius: 5,
             }
